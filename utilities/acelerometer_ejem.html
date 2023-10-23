@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Acelerómetro del Teléfono</title>
+</head>
+<body>
+    <h1>Acelerómetro del Teléfono</h1>
+    <p>Valores del Acelerómetro:</p>
+    <input type="range" id="sliderX" min="-10" max="10">
+    <p>X: <span id="accelerationX">0</span></p>
+
+    <input type="range" id="sliderY" min="-10" max="10">
+    <p>Y: <span id="accelerationY">0</span></p>
+
+    <input type="range" id="sliderZ" min="-10" max="10">
+    <p>Z: <span id="accelerationZ">0</span></p>
+
+    <p>Valores del Sensor de Orientación:</p>
+    <input type="range" id="sliderAlpha" min="0" max="360">
+    <p>Alpha: <span id="accelerationALPHA">0</span></p>
+
+    <input type="range" id="sliderBeta" min="-90" max="90">
+    <p>Beta: <span id="accelerationBETA">0</span></p>
+
+    <input type="range" id="sliderGamma" min="-180" max="180">
+    <p>Gamma: <span id="accelerationGAMMA">0</span></p>
+	
+	
+    <input type="range" id="sliderT" min="-180" max="180">
+    <p>Interval: <span id="accelerationT">0</span></p>
+
+    <script>
+                var accelerationX = 0 ;
+                var accelerationY = 0;
+                var accelerationZ = 0;
+				var accelerationALPHA = 0;
+				var accelerationBETA = 0;
+				var accelerationGAMMA = 0;
+				var accelerationT = 0;
+
+
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', function(event) {
+                accelerationX += event.acceleration.x;
+                accelerationY += event.acceleration.y;
+                accelerationZ += event.acceleration.z;
+				//accelerationALPHA = event.rotationRate.alpha;
+				//accelerationBETA = event.rotationRate.beta;
+				//accelerationGAMMA = event.rotationRate.gamma;
+				accelerationT += event.interval;
+
+				
+
+            });
+        } else {
+            document.getElementById('accelerationX').textContent = 'El dispositivo no admite el acelerómetro.';
+        }
+		if (window.DeviceOrientationEvent) {
+			window.addEventListener('deviceorientation', function(event) {
+				accelerationALPHA += event.alpha;
+				accelerationBETA += event.beta;
+				accelerationGAMMA += event.gamma;
+			});
+        } else {
+            document.getElementById('accelerationX').textContent = 'El dispositivo no admite el acelerómetro.';
+        }
+
+		function updateValues() {
+			document.getElementById('accelerationX').textContent = accelerationX;
+			document.getElementById('accelerationY').textContent = accelerationY;
+			document.getElementById('accelerationZ').textContent = accelerationZ;
+			document.getElementById('accelerationALPHA').textContent = accelerationALPHA;
+			document.getElementById('accelerationBETA').textContent = accelerationBETA;
+			document.getElementById('accelerationGAMMA').textContent = accelerationGAMMA;
+			document.getElementById('accelerationT').textContent = accelerationT;
+
+
+			// Update the sliders
+			document.getElementById('sliderX').value = accelerationX;
+			document.getElementById('sliderY').value = accelerationY;
+			document.getElementById('sliderZ').value = accelerationZ;
+			document.getElementById('sliderAlpha').value = accelerationALPHA;
+			document.getElementById('sliderBeta').value = accelerationBETA;
+			document.getElementById('sliderGamma').value = accelerationGAMMA;
+			document.getElementById('sliderT').value = accelerationT;
+
+            accelerationX = 0 ;
+            accelerationY = 0;
+            accelerationZ = 0;
+			accelerationALPHA = 0;
+			accelerationBETA = 0;
+			accelerationGAMMA = 0;
+			accelerationT = 0;
+
+		}
+		
+		setInterval(updateValues, 1000);
+    </script>
+</body>
+</html>
